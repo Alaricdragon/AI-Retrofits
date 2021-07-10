@@ -1,0 +1,15 @@
+id,trigger,conditions,script,text,options,notes
+# salvage changes for hullmod,,,,,,
+sal_showRatingAndCost,BeginSalvage,,"my_mod_SalvageEntity showCost
+FireAll PopulateSalvageOptions2",,,
+sal_optionCheckAccidents,DialogOptionSelected,$option == salSalvage,my_mod_SalvageEntity checkAccidents,,,
+sal_salvageOptionSelected,DialogOptionSelected,$option == salPerform,"my_mod_SalvageEntity performSalvage
+FireBest PostSalvagePerform",,,
+#START OF NEX DATA COPY FOR EXAMPLE,#offline untill repaired,,,,,
+#me_miningOption,PopulateOptions,"$market.isPlanetConditionMarketOnly
+$market.isSurveyed",SetEnabled me_miningPreview true,,3:me_miningPreview:ATTACK CARS,
+#me_miningPreview,DialogOptionSelected,$option == me_miningPreview,"my_mod_DilogOptionTest planet
+SetEnabled me_miningStart true",,me_miningStart: summon attack cars,
+#me_miningStart,DialogOptionSelected,$option == me_miningStart,"my_mod_StartAutomatedColony
+SetEnabled me_miningLeave true",NOOO DONT LEAVE ME,me_miningLeave: GO AWAY ATTACK CARS,
+#me_miningLeave,DialogOptionSelected,$option == me_miningLeave,DismissDialog,bye,,
