@@ -1,9 +1,9 @@
 {
-	"id":"mymod", # internal id
+	"id":"AI-Retrofits", # internal id
 	"name":"AIretrofit", # displayed to the player
 	"author":"Alricdragon",
 	"version":"0.4",
-	"description":"MINE",
+	"description":"adds some hullmods to replce crew on ships",
 	"gameVersion":"0.95a-RC15",
 	"jars":["jars/AIretrofit.jar"],
 	"modPlugin":"data.scripts.VIC_ModPlugin",
