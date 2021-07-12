@@ -1,10 +1,16 @@
 package data.scripts.hullmods;
 
+import com.fs.starfarer.api.GameState;
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.BaseHullMod;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Commodities;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
+import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.util.Misc;
+
+import java.awt.*;
 /*
     changes to consider:
         -(done)make it replace crew with heavy matchinary (for drones)
@@ -17,7 +23,8 @@ import com.fs.starfarer.api.impl.campaign.ids.Stats;
 
 
 public class AutomatedCrewReplacementDrones extends BaseHullMod {
-    static int DronePerCrew = 10;
+    int DronePerCrew = 10;
+
     float ReplacedCrew;
     public void applyEffectsBeforeShipCreation(ShipAPI.HullSize hullSize, MutableShipStatsAPI stats, String id) {
         //set this value to (maxcrew - mincrew) / 10; example: (500 = 50. 10 = 1)
@@ -26,17 +33,21 @@ public class AutomatedCrewReplacementDrones extends BaseHullMod {
         stats.getDynamic().getMod(Stats.getSurveyCostReductionId(Commodities.CREW)).modifyFlat(id,(MaxCrew - MinCrew) / DronePerCrew);
         //stats.getDynamic().getMod(Stats.getSurveyCostReductionId(Commodities.CREW)).modifyFlat(id,500);
         //stats.getDynamic().getMod(Stats.getSurveyCostReductionId(Commodities.SUPPLIES)).modifyFlat(id, 300);
+        ReplacedCrew = (MaxCrew - MinCrew);
+        stats.getMaxCrewMod().modifyFlat(id,ReplacedCrew * -1);
     }
-
     public String getDescriptionParam(int index, ShipAPI.HullSize hullSize) {
         //int temp = (int) (ReplacedCrew / DronePerCrew);
+        DronePerCrew = 10;
         switch(index) {
             case 0:
                 return "" + DronePerCrew;
             case 1:
-                return "" + (int)ReplacedCrew;
+                return "" + (int) (ReplacedCrew / DronePerCrew);
             case 2:
-                return "" + (int)(ReplacedCrew / DronePerCrew);
+                return "" + (int) ReplacedCrew;
+            case 3:
+                return "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
         }
         return null;
     }
@@ -55,4 +66,14 @@ public class AutomatedCrewReplacementDrones extends BaseHullMod {
         }
         return super.getUnapplicableReason(ship);
     }
+    public void addPostDescriptionSection(TooltipMakerAPI tooltip, ShipAPI.HullSize hullSize, ShipAPI ship, float width, boolean isForModSpec) {
+        //this is how im trying to highlight thigns. dose not work right. no idea why
+        if (Global.getSettings().getCurrentState() == GameState.TITLE) return;
+        Color h = Misc.getHighlightColor();
+        tooltip.addPara("",
+                0, h,
+                ""
+        );
+    }
+
 }
